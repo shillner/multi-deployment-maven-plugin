@@ -67,12 +67,13 @@ Deploys all the project artifacts to the specified additional repositories. Plea
 Below you can find a table containing all configuration parameters of the deploy goal:
 
 | Name | Type | Default Value | Required | Description |
-|------|:----:|:-------------:|-------------|
+|:----:|:----:|:-------------:|:--------:|-------------|
 | repositories | `Repository` | - | true | Use this parameter to specify a set of repositories. |
 
 The type `Repository` provides the following parameters:
+
 | Name | Type | Default Value | Required | Description |
-|------|:----:|:-------------:|-------------|
+|:----:|:----:|:-------------:|:--------:|-------------|
 | id | `String` | - | true | The id of the server or repository which is used to figure out the server configuration of the Maven settings. This server configuration is then used to setup the repository authentication. |
 | url | `String` | - | true | The URL of the repository. |
 | snapshotsEnabled | `Boolean` | `true` | true | If snapshots shall be deployed to this repository or not. |
