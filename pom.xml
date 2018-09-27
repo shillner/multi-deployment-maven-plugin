@@ -1,0 +1,114 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.itemis</groupId>
+    <artifactId>org-parent</artifactId>
+    <version>3</version>
+  </parent>
+
+  <groupId>com.itemis.maven.plugins</groupId>
+  <artifactId>multi-deployment-maven-plugin</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>Multi Deployment Maven Plugin</name>
+  <description>A small Maven plugin that is able to deploy the project artifacts to multiple Maven repositories.</description>
+  <url>https://github.com/shillner/multi-deployment-plugin</url>
+  <inceptionYear>2018</inceptionYear>
+
+  <developers>
+    <developer>
+      <id>shillner</id>
+      <name>Stanley Hillner</name>
+      <organization>itemis AG</organization>
+      <organizationUrl>https://itemis.com/</organizationUrl>
+      <timezone>1</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/shillner/multi-deployment-plugin.git</connection>
+    <url>https://github.com/shillner/multi-deployment-plugin</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/shillner/multi-deployment-plugin/issues</url>
+  </issueManagement>
+
+  <properties>
+    <version.java>1.8</version.java>
+    <version.maven>3.5.4</version.maven>
+    <version.maven-plugin-plugin>3.5.2</version.maven-plugin-plugin>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${version.maven}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>${version.maven-plugin-plugin}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${version.java}</source>
+            <target>${version.java}</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${version.maven-plugin-plugin}</version>
+        <configuration>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>disable-java8-doclint</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <additionalparam>-Xdoclint:none</additionalparam>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+</project>
