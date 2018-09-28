@@ -9,7 +9,7 @@
 
   <groupId>com.itemis.maven.plugins</groupId>
   <artifactId>multi-deployment-maven-plugin</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.1.2</version>
   <packaging>maven-plugin</packaging>
 
   <name>Multi Deployment Maven Plugin</name>
@@ -30,7 +30,7 @@
   <scm>
     <connection>scm:git:https://github.com/shillner/multi-deployment-maven-plugin.git</connection>
     <url>https://github.com/shillner/multi-deployment-plugin</url>
-    <tag>HEAD</tag>
+    <tag>0.1.2</tag>
   </scm>
 
   <issueManagement>
