@@ -1,6 +1,7 @@
 package com.itemis.maven.plugins.multiDeploy;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,6 +33,8 @@ import org.eclipse.aether.repository.RemoteRepository;
 
 @Mojo(name = "deploy", defaultPhase = LifecyclePhase.VERIFY)
 public class MultiDeploymentMojo extends AbstractMojo {
+  public static final String PROPERTY_REPO_BASE = "multiDeploy.repo";
+
   @Component
   private Deployer deployer;
   @Parameter(defaultValue = "${repositorySystemSession}", readonly = true, required = true)
@@ -40,12 +43,14 @@ public class MultiDeploymentMojo extends AbstractMojo {
   private MavenProject project;
   @Parameter(defaultValue = "${settings}", readonly = true, required = true)
   private Settings settings;
-  @Parameter(required = true)
+  @Parameter
   private Set<Repository> repositories;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     List<Artifact> projectArtifacts = getAllArtifacts();
+    parseRepositoryProperties();
+
     Set<RemoteRepository> remoteRepositories = isSnapshotVersion() ? setupSnapshotRepositories()
         : setupReleaseRepositories();
     Set<DeployRequest> deploymentRequests = remoteRepositories.stream().map(repo -> {
@@ -62,6 +67,21 @@ public class MultiDeploymentMojo extends AbstractMojo {
         throw new MojoFailureException(e.getMessage(), e);
       }
     }
+  }
+
+  public void parseRepositoryProperties() {
+    Set<Repository> repos = new HashSet<>();
+    if (this.repositories != null) {
+      repos.addAll(this.repositories);
+    }
+
+    System.getProperties().forEach((key, value) -> {
+      if (key.toString().startsWith(PROPERTY_REPO_BASE)) {
+        Repository.parseFromProperty(value.toString()).ifPresent(repo -> repos.add(repo));
+      }
+    });
+
+    this.repositories = repos;
   }
 
   private boolean isSnapshotVersion() {
