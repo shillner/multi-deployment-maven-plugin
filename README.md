@@ -78,3 +78,14 @@ The type `Repository` provides the following parameters:
 | url | `String` | - | true | The URL of the repository. |
 | snapshotsEnabled | `Boolean` | `true` | true | If snapshots shall be deployed to this repository or not. |
 | releasesEnabled | `Boolean` | `true` | true | If releases shall be deployed to this repository or not. |
+
+
+## More flexibility using system properties
+
+The usage of a static configuration as shown above is sufficient for some use-cases but far not for all. This is the reason why the plugin (from version 0.1.2) supports the usage of system properties (in conjunction with the static configuration) to specify release repositories.
+
+Each repository has to be specified in its own system property where the key has to start with `multiDeploy.repo` followed by a unique suffix per repository. The value of that property contains a comma-separated list of key-value pairs describing the repository's properties (id, url, snapshots, releases).
+
+### Sample Usage
+
+    mvn clean deploy -DmultiDeploy.repo1="id=nexus2,url=http://localhost:8082/nexus/content/repositories/snapshots/,releases=false" -DmultiDeploy.repo2="id=nexus3,url=http://localhost:8083/nexus/content/repositories/releases/,snapshots=false"
